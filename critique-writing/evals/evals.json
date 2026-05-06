@@ -1,0 +1,47 @@
+{
+  "skill_name": "critique-writing",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Can you give me feedback on this cover letter I'm sending to a software company?\n\n---\nDear Hiring Manager,\n\nI am writing to apply for the Software Engineer position at your company. I have always been passionate about technology and have been coding since I was young. I am a hard worker who is dedicated and committed to excellence. I am a team player but also capable of working independently.\n\nI have a Bachelor's degree in Computer Science and 3 years of experience. During my time at my current job, I have worked on many different projects and learned a lot of new things. I am familiar with many programming languages including Python, Java, and JavaScript. I am always eager to learn new technologies.\n\nI believe I would be a great fit for your company because I am passionate and hardworking. I am excited about the opportunity to contribute to your team. Please find my resume attached.\n\nThank you for your time and consideration. I look forward to hearing from you.\n\nSincerely,\nAlex Johnson\n---\n\nIs it good? Any suggestions?",
+      "expected_output": "Structured critique identifying the letter's generic/vague language problem as the primary issue, with specific examples from the text and concrete suggestions for improvement (e.g., name the actual company, use specific accomplishments with numbers, cut clichés). Should cover strengths and actionable rewrites.",
+      "files": [],
+      "expectations": [
+        "Identifies that the letter is too generic and doesn't mention the specific company by name",
+        "Points out the lack of concrete accomplishments or metrics",
+        "Calls out clichéd phrases like 'passionate', 'hard worker', 'team player'",
+        "Provides at least one concrete rewrite example or specific suggestion",
+        "Organizes feedback with clear sections (strengths, issues, suggestions)",
+        "Maintains an encouraging tone while being honest about the problems"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "hey can you critique this opening to my short story? be honest, i want real feedback\n\n---\nIt was a dark and stormy night. John woke up suddenly. He felt scared but he didn't know why. He looked around his bedroom. Everything seemed normal. But something was wrong. He could feel it. He got out of bed. His feet touched the cold floor. He walked to the window. He looked outside. The rain was falling hard. The street was empty. Then he saw it. A figure stood under the streetlight. It was looking up at his window.\n---",
+      "expected_output": "Critique targeting the choppy sentence structure (every sentence is short and declarative), the cliché opening line, and the telling vs. showing problem. Should acknowledge the effective tension at the end, suggest combining/varying sentences, and give examples of how to rewrite for atmosphere and depth.",
+      "files": [],
+      "expectations": [
+        "Flags the 'dark and stormy night' opening as a cliché",
+        "Identifies the choppy, repetitive sentence structure as a major weakness",
+        "Notes the 'telling' problem (e.g., 'He felt scared') vs showing through action/sensation",
+        "Acknowledges the genuine tension created by the figure at the end",
+        "Offers a concrete example of how at least one passage could be rewritten",
+        "Matches the casual register the user used ('hey', 'be honest')"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Please review this internal memo I wrote for our engineering team about our new deployment process. I want to make sure it's clear and professional.\n\n---\nTO: Engineering Team\nFROM: Sarah Chen, DevOps Lead\nRE: New Deployment Process Effective Monday\nDATE: March 15, 2024\n\nEffective Monday March 18th, we will be transitioning to a new CI/CD pipeline using GitHub Actions to replace our current Jenkins setup. This change has been necessitated by the fact that our Jenkins instance has been experiencing increasing instability issues and the maintenance overhead has become unsustainable given current team bandwidth constraints.\n\nThe new process will require all engineers to ensure that their feature branches pass all automated tests before submitting pull requests. PRs will now require approval from at least two reviewers instead of one. Additionally, deployments to production will now be gated behind a mandatory 24-hour staging period.\n\nIn terms of what you need to do: please make sure you have cloned the new deployment scripts from the devops/deployment-v2 repo. You should also familiarize yourself with the GitHub Actions workflow file located at .github/workflows/deploy.yml. If you have any questions or encounter any issues during this transition period, please don't hesitate to reach out to the DevOps team via the #devops Slack channel or by submitting a ticket to our Jira board.\n\nWe appreciate your patience and cooperation as we work through this transition. Thank you.\n---",
+      "expected_output": "Critique noting the memo is generally clear and well-structured but flagging the long, dense paragraph structure, passive constructions, and the fact that the action items are buried at the end rather than called out clearly. Suggestions should include using bullet points for action items, a cleaner structure, and trimming wordy phrases.",
+      "files": [],
+      "expectations": [
+        "Recognizes this is a professional/technical memo and calibrates feedback accordingly",
+        "Notes the action items are buried in prose rather than called out as a clear list",
+        "Identifies at least one overly wordy or passive phrase",
+        "Acknowledges what the memo does well (clear subject, professional tone, necessary context)",
+        "Suggests a specific structural improvement (e.g., bullet points for action items)",
+        "Does not over-critique a memo that is largely functional — focuses on the most impactful improvements"
+      ]
+    }
+  ]
+}
