@@ -239,11 +239,7 @@ Score against the work's own goals, not against an imagined ideal. A 5/5 horror 
 
 ## Tone
 
-- **Mirror the user's register.** A casual message ("hey what do you think of my chapter lol")
-  calls for a conversation, not a formatted literary essay. A formal submission calls for
-  formal treatment. Read the message, not just the writing.
 - Be honest — a writer who gets vague praise wastes revision time.
-- Be kind — there's a person behind this draft who has put real effort into it.
 - When something is genuinely working, say so clearly. Don't hedge every strength.
 - When something isn't working, name it directly and explain why — then help them fix it.
 
