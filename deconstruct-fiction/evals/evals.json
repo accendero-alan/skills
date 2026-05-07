@@ -1,0 +1,55 @@
+{
+  "skill_name": "deconstruct-fiction",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Here's a short story I'm working on. Can you break it down into scenes for me?\n\n[contents of evals/files/eval1_explicit_breaks.txt]",
+      "expected_output": "Three scene cards with structured metadata (characters, setting, time in narrative, conflict/tension, narrative purpose, emotional tone, summary, source text), followed by a scene inventory table. Scenes should align with the three *** break markers.",
+      "files": ["evals/files/eval1_explicit_breaks.txt"],
+      "expectations": [
+        "Exactly 3 scenes are identified, corresponding to the 3 *** divisions",
+        "Scene 1 identifies Mara as the character and a train station as the setting",
+        "Scene 2 identifies the station café as the setting",
+        "Scene 3 identifies the café window / station as the setting with a mention of the cancellation announcement",
+        "David is identified as a character (by name) in at least one scene",
+        "Each scene card contains all required fields: Characters, Setting, Time in narrative, Conflict/Tension, Narrative purpose, Emotional tone, Summary, Source text",
+        "A scene inventory table appears at the end",
+        "The conflict/tension fields are specific (name stakes, not vague)",
+        "Source text is quoted verbatim for each scene"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I'm editing this chapter and want to see it broken into scenes. There are no section breaks in the text — just figure out where the scenes change.\n\n[contents of evals/files/eval2_no_breaks.txt]",
+      "expected_output": "The chapter should be broken into 3 or 4 scenes based on implied location/time shifts: (1) the drive/missing the exit, (2) the gas station, (3) the driveway/car, (4) the house interior (kitchen and bedroom). Each with full scene card metadata and a scene inventory.",
+      "files": ["evals/files/eval2_no_breaks.txt"],
+      "expectations": [
+        "At least 3 scenes are identified (the gas station should be its own scene distinct from the drive)",
+        "Garrett is identified as the sole character in all scenes",
+        "The gas station scene identifies the teenage cashier as a secondary character",
+        "The word 'manageable' or the doctor's news is captured in the conflict/tension or summary of the final scene",
+        "Each scene has a distinct setting that reflects the location shift",
+        "Each scene card contains all required fields: Characters, Setting, Time in narrative, Conflict/Tension, Narrative purpose, Emotional tone, Summary, Source text",
+        "A scene inventory table appears at the end",
+        "No editorializing — the skill does not suggest changes or critique the writing"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "This is a chapter from a novel I'm restructuring. Break it into scenes — it has a flashback in the middle, make sure that's captured correctly.\n\n[contents of evals/files/eval3_flashback.txt]",
+      "expected_output": "Three scenes: (1) Selin alone in the hotel pre-dawn, (2) the flashback to the commission testimony, (3) the lobby scene with Fatma the morning of the vote. The 'Time in narrative' field should clearly mark the middle scene as a flashback set decades earlier. Scene inventory at the end.",
+      "files": ["evals/files/eval3_flashback.txt"],
+      "expectations": [
+        "Exactly 3 scenes are identified",
+        "The middle scene is clearly labeled as a flashback in the 'Time in narrative' field",
+        "The flashback scene's setting is distinct from the hotel (different city, different decade)",
+        "Fatma is identified as a character in the first and/or third scene",
+        "The journalist and the card are mentioned in the flashback scene's summary",
+        "The commission testimony is identified as the central action of the flashback scene",
+        "Each scene card contains all required fields: Characters, Setting, Time in narrative, Conflict/Tension, Narrative purpose, Emotional tone, Summary, Source text",
+        "A scene inventory table appears at the end",
+        "The third scene captures the dynamic between Selin and Fatma in the conflict or tone fields"
+      ]
+    }
+  ]
+}
