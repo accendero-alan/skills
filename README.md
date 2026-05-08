@@ -19,6 +19,7 @@ Packaging a skill produces a `skill-name.skill` file (excluded from git) that ca
 
 | Skill | Description |
 |---|---|
+| [apply-style-guide](apply-style-guide/SKILL.md) | Walk through a written work section by section and rewrite each section to match a style guide |
 | [critique-writing](critique-writing/SKILL.md) | Deep literary critique of creative writing — fiction, flash, novels, screenplays |
 
 ## Packaging
