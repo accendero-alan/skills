@@ -69,6 +69,7 @@ where noted; required fields must be non-empty before you proceed.
 - `matrix_description` — e.g. "K2-EDTA whole blood" (§2.1)
 - `population_description` — e.g. "adult patients receiving CAR-T therapy" (§2.1)
 - `result_units` — e.g. "% of parent gate / cells per µL" (§2.1)
+- `decision_use` — e.g. "primary efficacy endpoint" or "safety monitoring / patient eligibility" (§2.1)
 
 ### §2.4 Reporting endpoints (`reporting` object — optional)
 - `primary_results` — e.g. "% CD4+ of CD3+, absolute count per µL"
@@ -104,7 +105,7 @@ Each entry:
 
 `bridging_study_report_id` — string (optional; e.g. "BSR-2024-01")
 
-### §4.7 Software systems (`software_systems` object — optional)
+### §3.4 Software systems (`software_systems` object — optional)
 Seven sub-objects, each with the fields shown:
 
 | Key | Rows filled | Fields |
@@ -152,7 +153,7 @@ them with the computed values from §5.3/5.4/5.6.
   `precision_target`, `lob_lod_loq`, `specificity`, `linearity_amr`,
   `robustness`, `stability`, `carryover`
 
-### §6 Data records table (`data_records` object — optional)
+### §6.5 Data records table (`data_records` object — optional)
 Eight sub-objects, one per row. Each has: `system`, `duration`, `audit_trail`, `sop_id`.
 
 | Key | Record type |
@@ -176,7 +177,7 @@ Example for `raw_fcs_files`:
 }
 ```
 
-### §6 Retention paragraph (`data_retention` object — optional)
+### §6.5 Retention paragraph (`data_retention` object — optional)
 - `fcs_retention_period` — e.g. "15 years"
 - `fcs_storage_location` — e.g. "validated network archive"
 - `chain_of_custody_owner` — e.g. "Lab Director"
@@ -241,6 +242,29 @@ Named SOP/plan IDs for the mitigations column of each risk row:
 - `change_control_sop` — Change control SOP ID
 - `capa_sop` — CAPA SOP ID
 - `pre_analytical_plan_id` — Pre-analytical handling plan ID (also fills §7.6)
+
+### Numeric acceptance thresholds (`thresholds` object — optional)
+The template uses `[X]`, `[Y]`, and `[N]` as generic numeric placeholders in
+descriptive text throughout §4–§7 and §9. Provide these once and they fill
+everywhere:
+
+- `tolerance_pct` — integer or decimal; fills all `[X]` positions (default: `"20"`)
+  Used for: cocktail ±X%, cross-cytometer ±X%, linearity ±X%, stability ±X%,
+  carryover ≤X%, ref-PBMC QC ±X%, antibody bridging ±X%, tandem dye ±X%,
+  software concordance ≥X%, accuracy intercept ±X
+- `accuracy_bias_pct` — fills the single `[Y]` position in §5.2 accuracy metric (default: `"10"`)
+  Used for: "bias ≤Y% at decision threshold"
+- `reference_pbmc_reserve_vials` — fills the single `[N]` in §9.1 PBMC risk row (default: `"10"`)
+  Used for: "Maintain ≥N vials reserve"
+
+Example:
+```json
+"thresholds": {
+  "tolerance_pct": "20",
+  "accuracy_bias_pct": "10",
+  "reference_pbmc_reserve_vials": "15"
+}
+```
 
 ### §9.2 Deviation SOP
 `deviation_sop_id` — e.g. "SOP-DEV-001"
@@ -338,7 +362,8 @@ Tell the user:
     "measurand": "CD4+ and CD8+ T cells",
     "matrix_description": "cryopreserved PBMC (K2-EDTA whole blood source)",
     "population_description": "adult patients enrolled in protocol PROT-2024-001",
-    "result_units": "% of CD3+ parent gate and absolute cells per µL"
+    "result_units": "% of CD3+ parent gate and absolute cells per µL",
+    "decision_use": "secondary efficacy endpoint"
   },
   "reporting": {
     "primary_results": "% CD4+ of CD3+, % CD8+ of CD3+, absolute count per µL",
@@ -524,6 +549,11 @@ Tell the user:
     "capa_sop": "SOP-DEV-002",
     "pre_analytical_plan_id": "TP-2024-001"
   },
-  "deviation_sop_id": "SOP-DEV-001"
+  "deviation_sop_id": "SOP-DEV-001",
+  "thresholds": {
+    "tolerance_pct": "20",
+    "accuracy_bias_pct": "10",
+    "reference_pbmc_reserve_vials": "10"
+  }
 }
 ```
