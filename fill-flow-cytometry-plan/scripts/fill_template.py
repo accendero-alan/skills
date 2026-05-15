@@ -8,12 +8,13 @@ Usage:
 The data.json must be produced by calc_stats.py (which validates fields and
 computes all statistical values). This script only handles XML manipulation.
 
-Covers ALL 88 unique placeholder token types across the template:
+Covers ALL 92 unique placeholder token types across the template:
   Cover page, §1.1 purpose paragraph, §2.1 intended-use statement,
   §2.4 reporting endpoints, §3.1 PBMC specs, §3.2 antibody panel,
-  §4.6 cytometers, §4.7 software systems, §5.11 acceptance criteria,
-  §6 data records table + retention paragraph, §7.1-7.6 QC SOP tables,
+  §3.4 software systems, §4.6 cytometers, §5.11 acceptance criteria,
+  §6.5 data records table + retention paragraph, §7.1-7.6 QC SOP tables,
   §8.3 approvals, §9.1 risks (L/M/H + unique SOPs), §9.2 deviations.
+  Includes [X] tolerance %, [Y] bias %, [N] reserve-vial count tokens.
 """
 import json
 import re
@@ -226,6 +227,9 @@ def fill(data: dict, template_path: str, output_path: str):
     doc = doc.replace(
         "[units: % of parent / cells per µL / positive vs. negative]",
         xe(iu.get("result_units", "")))
+    doc = doc.replace(
+        "[decision: primary efficacy endpoint / safety monitoring / patient eligibility / dose adjustment]",
+        xe(iu.get("decision_use", "")))
 
     # -----------------------------------------------------------------------
     # §2.4 DECISION USE AND REPORTING ENDPOINTS — inline tokens
@@ -314,7 +318,7 @@ def fill(data: dict, template_path: str, output_path: str):
                       xe(data.get("bridging_study_report_id", "")), 1)
 
     # -----------------------------------------------------------------------
-    # §4.7 SOFTWARE AND DATA SYSTEMS TABLE
+    # §3.4 SOFTWARE AND DATA SYSTEMS TABLE (was §4.7 in prior template version)
     # Document order of rows: acquisition → analysis → LIMS → FCS storage →
     # ELN → sample manifest → pre-analytical
     #
@@ -420,15 +424,15 @@ def fill(data: dict, template_path: str, output_path: str):
                       xe(ac.get("stability", "")))
 
     # -----------------------------------------------------------------------
-    # §6 DATA MANAGEMENT — RECORDS RETENTION TABLE
+    # §6.5 DATA MANAGEMENT — RECORDS RETENTION TABLE
     # 8 fixed rows; columns: system | retention | audit trail | SOP ref
     #
-    # Positional token order (document order within §6):
+    # Positional token order (document order within §6.5):
     #   [System / location]  ×1  row 1 (unique)
     #   [Duration]           ×8  rows 1–8
     #   [Yes / system]       ×8  rows 1–8
     #   [Policy / SOP ID]    ×3  rows 1, 2, 4
-    #   [System / version]   ×1  row 2 (2nd doc occurrence; 1st was §4.7)
+    #   [System / version]   ×1  row 2 (2nd doc occurrence; 1st was §3.4)
     #   [System]             ×4  rows 3, 5, 6, 8
     #   [SOP ID]             ×3  rows 3, 5, 6  (positions 1–3 of 14 total)
     #   [LIMS / system]      ×1  row 4 (unique)
@@ -530,7 +534,7 @@ def fill(data: dict, template_path: str, output_path: str):
     doc = doc.replace("[HR / QMS SOP ID]",
                       xe(r8.get("sop_id", "")))
 
-    # §6 retention paragraph — lowercase tokens are unique (1× each)
+    # §6.5 retention paragraph — lowercase tokens are unique (1× each)
     dret = data.get("data_retention", {})
     doc = doc.replace("[duration]",
                       xe(dret.get("fcs_retention_period", "")))
@@ -686,6 +690,31 @@ def fill(data: dict, template_path: str, output_path: str):
     # -----------------------------------------------------------------------
     doc = doc.replace("[Enter ID]",
                       xe(data.get("deviation_sop_id", "")))
+
+    # -----------------------------------------------------------------------
+    # NUMERIC THRESHOLD TOKENS — [X], [Y], [N]
+    # These appear throughout the template in descriptive/example text cells
+    # to indicate user-specified acceptance thresholds:
+    #
+    #   [X] ×10 — percentage tolerance threshold used across multiple sections:
+    #     §4.4 cocktail ±[X]%, §4.6 cross-cytometer ±[X]%, §5.2 accuracy
+    #     intercept ±[X], §5.6 linearity ±[X]%, §5.8 stability ±[X]%,
+    #     §5.10 carryover ≤[X]%, §7.2 ref-PBMC mid ±[X]%, §7.2 near-LLOQ
+    #     CV ≤[X]%, §7.3 antibody bridging ±[X]%, §7.3 tandem dye ±[X]%,
+    #     §7.6 software concordance ≥[X]%
+    #   [Y] ×1  — accuracy bias threshold: §5.2 "bias ≤[Y]% at decision threshold"
+    #   [N] ×1  — reference PBMC reserve vials: §9.1 "Maintain ≥[N] vials reserve"
+    #
+    # Using doc.replace() because every [X] gets the same tolerance value,
+    # every [Y] gets the same bias value, [N] is unique.
+    # -----------------------------------------------------------------------
+    thresholds = data.get("thresholds", {})
+    doc = doc.replace("[X]",
+                      xe(str(thresholds.get("tolerance_pct", "20"))))
+    doc = doc.replace("[Y]",
+                      xe(str(thresholds.get("accuracy_bias_pct", "10"))))
+    doc = doc.replace("[N]",
+                      xe(str(thresholds.get("reference_pbmc_reserve_vials", "10"))))
 
     # -----------------------------------------------------------------------
     # Write output DOCX
